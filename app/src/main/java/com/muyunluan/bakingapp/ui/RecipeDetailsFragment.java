@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
-import com.muyunluan.bakingapp.ui.dummy.DummyContent;
-import com.muyunluan.bakingapp.ui.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 
@@ -107,7 +105,7 @@ public class RecipeDetailsFragment extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_steps_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(mSteps, mListener));
 
         return view;
     }
@@ -141,7 +139,6 @@ public class RecipeDetailsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(BakingRecipe.BakingStep step);
     }
 }

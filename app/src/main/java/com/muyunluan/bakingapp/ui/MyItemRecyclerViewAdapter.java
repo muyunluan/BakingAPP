@@ -7,23 +7,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.muyunluan.bakingapp.R;
+import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.ui.RecipeDetailsFragment.OnListFragmentInteractionListener;
-import com.muyunluan.bakingapp.ui.dummy.DummyContent.DummyItem;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ * Created by Fei Deng on 6/30/17.
+ * Copyright (c) 2017 Muyunluan. All rights reserved.
  */
+
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final ArrayList<BakingRecipe.BakingStep> mStepsList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyItemRecyclerViewAdapter(ArrayList<BakingRecipe.BakingStep> bakingSteps, OnListFragmentInteractionListener listener) {
+        mStepsList = bakingSteps;
         mListener = listener;
     }
 
@@ -36,9 +36,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mStep = mStepsList.get(position);
+        holder.mIdTv.setText(String.valueOf(holder.mStep.getmId()) + ". ");
+        holder.mShortDesTv.setText(holder.mStep.getmShortDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mStep);
                 }
             }
         });
@@ -54,25 +54,25 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mStepsList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mIdTv;
+        public final TextView mShortDesTv;
+        public BakingRecipe.BakingStep mStep;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdTv = (TextView) view.findViewById(R.id.tv_step_id);
+            mShortDesTv = (TextView) view.findViewById(R.id.tv_step_short_des);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mShortDesTv.getText() + "'";
         }
     }
 }

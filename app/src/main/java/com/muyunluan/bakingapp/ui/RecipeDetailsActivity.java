@@ -6,8 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.muyunluan.bakingapp.R;
+import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
-import com.muyunluan.bakingapp.ui.dummy.DummyContent;
 
 /**
  * Created by Fei Deng on 6/30/17.
@@ -48,7 +48,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(BakingRecipe.BakingStep step) {
 
     }
 }
