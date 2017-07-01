@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
+import com.muyunluan.bakingapp.data.Constants;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+    public void onBindViewHolder(RecipeViewHolder holder, final int position) {
         BakingRecipe bakingRecipe = mBakingRecipe.get(position);
         //Log.i(TAG, "onBindViewHolder: get Baking Recipe - " + bakingRecipe.toString());
         holder.recipeImg.setImageResource(bakingRecipe.getmImageSource());
@@ -63,6 +64,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
+                intent.putExtra(Constants.KEY_INDREDIENT, mBakingRecipe.get(position).getmIngredients());
+                intent.putExtra(Constants.KEY_STEP, mBakingRecipe.get(position).getmSteps());
                 mContext.startActivity(intent);
             }
         });

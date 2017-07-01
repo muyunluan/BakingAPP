@@ -118,7 +118,7 @@ public class RecipeListFragment extends Fragment {
             try {
                 String jsonRecipeResponse = NetworkUtils.getResponseFromHttpUrl(OpenRecipeJsonUtils.RECIPE_URL);
                 OpenRecipeJsonUtils.getRecipesFromJson(jsonRecipeResponse, mBakingRecipeData);
-                Log.i(TAG, "doInBackground: updated Baking Recipe data size - " + mBakingRecipeData.size());
+                //Log.i(TAG, "doInBackground: updated Baking Recipe data size - " + mBakingRecipeData.size());
                 return mBakingRecipeData;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -133,7 +133,7 @@ public class RecipeListFragment extends Fragment {
             if (null != bakingRecipes && 0 < bakingRecipes.size()) {
                 mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
                 mRecipeListView.setAdapter(mRecipesAdapter);
-                Log.i(TAG, "onPostExecute: post Recipes len - " + bakingRecipes.size());
+                //Log.i(TAG, "onPostExecute: post Recipes len - " + bakingRecipes.size());
                 mRecipesAdapter.addAll(bakingRecipes);
                 mRecipesAdapter.notifyDataSetChanged();
             } else {

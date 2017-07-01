@@ -25,4 +25,12 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+
+    <style name="ingredientTitle" parent="AppTheme">
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">16sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

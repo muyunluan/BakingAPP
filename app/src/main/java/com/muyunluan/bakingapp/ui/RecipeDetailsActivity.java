@@ -1,9 +1,12 @@
 package com.muyunluan.bakingapp.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.muyunluan.bakingapp.R;
+import com.muyunluan.bakingapp.data.Constants;
 import com.muyunluan.bakingapp.ui.dummy.DummyContent;
 
 /**
@@ -13,17 +16,39 @@ import com.muyunluan.bakingapp.ui.dummy.DummyContent;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDetailsFragment.OnListFragmentInteractionListener {
 
+    private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
-        if (null == savedInstanceState) {
-            getSupportFragmentManager().beginTransaction().add(R.id.recipe_details_frame, new RecipeDetailsFragment()).commit();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
+
+        if (null != getIntent()) {
+            Bundle args = new Bundle();
+
+            if (getIntent().hasExtra(Constants.KEY_INDREDIENT)) {
+                args.putParcelableArrayList(Constants.KEY_INDREDIENT, getIntent().getParcelableArrayListExtra(Constants.KEY_INDREDIENT));
+            } else {
+                Log.e(TAG, "onCreate: No required Ingredients info being sent");
+            }
+
+            if (getIntent().hasExtra(Constants.KEY_STEP)) {
+                args.putParcelableArrayList(Constants.KEY_STEP, getIntent().getParcelableArrayListExtra(Constants.KEY_STEP));
+            } else {
+                Log.e(TAG, "onCreate: No required Steps info being sent");
+            }
+
+            recipeDetailsFragment.setArguments(args);
         }
+
+        transaction.add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
     }
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        
+
     }
 }

@@ -1,5 +1,8 @@
 package com.muyunluan.bakingapp.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
@@ -86,7 +89,7 @@ public class BakingRecipe {
 
 
     /* class for Ingredient */
-    public static class BakingIngredient {
+    public static class BakingIngredient implements Parcelable {
         private int mQuantity;
         private String mMeasure;
         private String mIngredient;
@@ -97,13 +100,32 @@ public class BakingRecipe {
             this.mIngredient = mIngredient;
         }
 
+        protected BakingIngredient(Parcel in) {
+            mQuantity = in.readInt();
+            mMeasure = in.readString();
+            mIngredient = in.readString();
+        }
+
+        public static final Creator<BakingIngredient> CREATOR = new Creator<BakingIngredient>() {
+            @Override
+            public BakingIngredient createFromParcel(Parcel in) {
+                return new BakingIngredient(in);
+            }
+
+            @Override
+            public BakingIngredient[] newArray(int size) {
+                return new BakingIngredient[size];
+            }
+        };
+
         @Override
         public String toString() {
-            return "BakingIngredient{" +
-                    "mQuantity=" + mQuantity +
-                    ", mMeasure='" + mMeasure + '\'' +
-                    ", mIngredient='" + mIngredient + '\'' +
-                    '}';
+            return this.mIngredient + " ( " + this.mQuantity + " " + this.mMeasure + " )";
+//                    "BakingIngredient{" +
+//                    "mQuantity=" + mQuantity +
+//                    ", mMeasure='" + mMeasure + '\'' +
+//                    ", mIngredient='" + mIngredient + '\'' +
+//                    '}';
         }
 
         public int getmQuantity() {
@@ -129,11 +151,24 @@ public class BakingRecipe {
         public void setmIngredient(String mIngredient) {
             this.mIngredient = mIngredient;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.mQuantity);
+            dest.writeString(this.mMeasure);
+            dest.writeString(this.mIngredient);
+        }
+
     }
     /* End of class for Ingredient */
 
     /* class for Step */
-    public static class BakingStep {
+    public static class BakingStep implements Parcelable {
         private int mId;
         private String mShortDescription;
         private String mDescription;
@@ -147,6 +182,26 @@ public class BakingRecipe {
             this.mVideoUrl = mVideoUrl;
             this.mThumbnailUrl = mThumbnailUrl;
         }
+
+        protected BakingStep(Parcel in) {
+            mId = in.readInt();
+            mShortDescription = in.readString();
+            mDescription = in.readString();
+            mVideoUrl = in.readString();
+            mThumbnailUrl = in.readString();
+        }
+
+        public static final Creator<BakingStep> CREATOR = new Creator<BakingStep>() {
+            @Override
+            public BakingStep createFromParcel(Parcel in) {
+                return new BakingStep(in);
+            }
+
+            @Override
+            public BakingStep[] newArray(int size) {
+                return new BakingStep[size];
+            }
+        };
 
         @Override
         public String toString() {
@@ -197,6 +252,20 @@ public class BakingRecipe {
 
         public void setmThumbnailUrl(String mThumbnailUrl) {
             this.mThumbnailUrl = mThumbnailUrl;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(this.mId);
+            dest.writeString(this.mShortDescription);
+            dest.writeString(this.mDescription);
+            dest.writeString(this.mVideoUrl);
+            dest.writeString(mThumbnailUrl);
         }
     }
     /* End of class for Step */

@@ -12,4 +12,8 @@ public class Constants {
     // the sequence is exactly following the order of Recipe ID in Json file
     public static final int[] recipeImages = {R.mipmap.nutella_pie, R.mipmap.brownie, R.mipmap.yellow_cake, R.mipmap.chesse_cake};
 
+
+    public static final String KEY_SAVED_RECIPES = "saved_recipes";
+    public static final String KEY_INDREDIENT = "ingredient";
+    public static final String KEY_STEP = "step";
 }
