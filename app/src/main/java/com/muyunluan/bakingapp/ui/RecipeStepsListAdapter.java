@@ -11,18 +11,19 @@ import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.ui.RecipeDetailsFragment.OnListFragmentInteractionListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Fei Deng on 6/30/17.
  * Copyright (c) 2017 Muyunluan. All rights reserved.
  */
 
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class RecipeStepsListAdapter extends RecyclerView.Adapter<RecipeStepsListAdapter.ViewHolder> {
 
     private final ArrayList<BakingRecipe.BakingStep> mStepsList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(ArrayList<BakingRecipe.BakingStep> bakingSteps, OnListFragmentInteractionListener listener) {
+    public RecipeStepsListAdapter(ArrayList<BakingRecipe.BakingStep> bakingSteps, OnListFragmentInteractionListener listener) {
         mStepsList = bakingSteps;
         mListener = listener;
     }
@@ -37,7 +38,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mStep = mStepsList.get(position);
-        holder.mIdTv.setText(String.valueOf(holder.mStep.getmId()) + ". ");
+        holder.mIdTv.setText(String.format(Locale.US, "%d. ", holder.mStep.getmId()));
         holder.mShortDesTv.setText(holder.mStep.getmShortDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

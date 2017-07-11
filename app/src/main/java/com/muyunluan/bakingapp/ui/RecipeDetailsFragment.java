@@ -102,10 +102,16 @@ public class RecipeDetailsFragment extends Fragment {
             //TODO: use string.xml
             mRecipeTv.setText("NULL Ingredients");
         }
-        Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_steps_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(mSteps, mListener));
+
+        if (hasSteps) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_steps_list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new RecipeStepsListAdapter(mSteps, mListener));
+        } else {
+            Log.e(TAG, "onCreateView: empty Steps");
+        }
+
 
         return view;
     }

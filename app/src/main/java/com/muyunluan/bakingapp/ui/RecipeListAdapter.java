@@ -17,6 +17,7 @@ import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Fei Deng on 6/28/17.
@@ -58,7 +59,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         //Log.i(TAG, "onBindViewHolder: get Baking Recipe - " + bakingRecipe.toString());
         holder.recipeImg.setImageResource(bakingRecipe.getmImageSource());
         holder.recipeNameTv.setText(bakingRecipe.getmName());
-        holder.recipeServingTv.setText(" Servings: " + bakingRecipe.getmServings());
+        holder.recipeServingTv.setText(String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

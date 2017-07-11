@@ -1,13 +1,17 @@
 package com.muyunluan.bakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Created by Fei Deng on 6/30/17.
@@ -17,6 +21,8 @@ import com.muyunluan.bakingapp.data.Constants;
 public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDetailsFragment.OnListFragmentInteractionListener {
 
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
+
+    private ArrayList<BakingRecipe.BakingStep> mSteps = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
 
             if (getIntent().hasExtra(Constants.KEY_STEP)) {
                 args.putParcelableArrayList(Constants.KEY_STEP, getIntent().getParcelableArrayListExtra(Constants.KEY_STEP));
+                mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
             } else {
                 Log.e(TAG, "onCreate: No required Steps info being sent");
             }
@@ -49,6 +56,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
 
     @Override
     public void onListFragmentInteraction(BakingRecipe.BakingStep step) {
+        Toast.makeText(this, "recipe clicked", Toast.LENGTH_LONG).show();
 
+        Log.i(TAG, "onListFragmentInteraction: go to Step - " + step.toString());
+
+        Intent intent = new Intent(this, StepDisplayActivity.class);
+        intent.putExtra("step", step);
+        intent.putExtra("steps", mSteps);
+        startActivity(intent);
     }
 }
