@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
@@ -55,13 +54,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
     }
 
     @Override
-    public void onListFragmentInteraction(BakingRecipe.BakingStep step) {
-        Toast.makeText(this, "recipe clicked", Toast.LENGTH_LONG).show();
-
-        Log.i(TAG, "onListFragmentInteraction: go to Step - " + step.toString());
+    public void onListFragmentInteraction(int position) {
 
         Intent intent = new Intent(this, StepDisplayActivity.class);
-        intent.putExtra("step", step);
+        intent.putExtra("position", position);
         intent.putExtra("steps", mSteps);
         startActivity(intent);
     }

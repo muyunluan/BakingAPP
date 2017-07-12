@@ -30,11 +30,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     private Context mContext;
     private ArrayList<BakingRecipe> mBakingRecipe;
-    private int mRecipeCount;
 
     public RecipeListAdapter(ArrayList<BakingRecipe> mBakingRecipe) {
         this.mBakingRecipe = mBakingRecipe;
-        mRecipeCount = 0;
     }
 
     @Override
@@ -43,13 +41,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         View rootView = LayoutInflater.from(mContext).inflate(R.layout.recipe_list_item, parent, false);
 
         RecipeViewHolder recipeViewHolder = new RecipeViewHolder(rootView);
-//        BakingRecipe bakingRecipe = mBakingRecipe.get(mRecipeCount);
-//        Log.i(TAG, "onBindViewHolder: get Baking Recipe - " + bakingRecipe.toString());
-//        recipeViewHolder.recipeNameTv.setText(bakingRecipe.getmName());
-//        Log.i(TAG, "onCreateViewHolder: get name - " + bakingRecipe.getmName());
-//        recipeViewHolder.recipeServingTv.setText(String.valueOf(bakingRecipe.getmServings()));
-        mRecipeCount++;
-
         return recipeViewHolder;
     }
 

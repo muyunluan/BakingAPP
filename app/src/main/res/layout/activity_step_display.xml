@@ -37,9 +37,9 @@
 
     <Button
         android:id="@+id/bt_prev"
-        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/bt_prev"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintTop_toTopOf="@+id/tv_description"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -49,9 +49,9 @@
 
     <Button
         android:id="@+id/bt_next"
-        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/bt_next"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintTop_toTopOf="@+id/tv_description"
         app:layout_constraintRight_toRightOf="parent"

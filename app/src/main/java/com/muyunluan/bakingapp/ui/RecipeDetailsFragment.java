@@ -27,10 +27,6 @@ import static android.content.ContentValues.TAG;
 
 public class RecipeDetailsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<BakingRecipe.BakingIngredient> mIngredients = new ArrayList<>();
@@ -46,27 +42,17 @@ public class RecipeDetailsFragment extends Fragment {
     public RecipeDetailsFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static RecipeDetailsFragment newInstance(int columnCount) {
-        RecipeDetailsFragment fragment = new RecipeDetailsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
 
             mIngredients = getArguments().getParcelableArrayList(Constants.KEY_INDREDIENT);
             if (null != mIngredients && mIngredients.size() > 0) {
                 hasIngredients = true;
-                Log.i(TAG, "onCreate: get Ingredients size - " + mIngredients.size());
+                //Log.i(TAG, "onCreate: get Ingredients size - " + mIngredients.size());
             } else {
                 hasIngredients = false;
                 Log.e(TAG, "onCreate: empty Ingredients or error to get Bundle info");
@@ -96,11 +82,10 @@ public class RecipeDetailsFragment extends Fragment {
                 ingredientsDetail.append(bakingIngredient.toString() + "\n");
             }
             mRecipeTv.setText(ingredientsDetail.toString());
-            Log.i(TAG, "onCreateView: get Ingredients - \n" + ingredientsDetail.toString());
+            //Log.i(TAG, "onCreateView: get Ingredients - \n" + ingredientsDetail.toString());
         } else {
-            Log.e(TAG, "onCreateView: empty Ingredients");
-            //TODO: use string.xml
-            mRecipeTv.setText("NULL Ingredients");
+            Log.e(TAG, "onCreateView: empty Ingredient");
+            mRecipeTv.setText(getString(R.string.empty_ingredient));
         }
 
         if (hasSteps) {
@@ -111,7 +96,6 @@ public class RecipeDetailsFragment extends Fragment {
         } else {
             Log.e(TAG, "onCreateView: empty Steps");
         }
-
 
         return view;
     }
@@ -134,17 +118,7 @@ public class RecipeDetailsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(BakingRecipe.BakingStep step);
+        void onListFragmentInteraction(int position);
     }
 }

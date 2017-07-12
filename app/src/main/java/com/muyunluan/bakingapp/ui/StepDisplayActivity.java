@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -46,8 +47,8 @@ public class StepDisplayActivity extends AppCompatActivity implements View.OnCli
     private BakingRecipe.BakingStep mStep;
     private String mVideoUrlStr;
     private String mDescriptionStr;
-    private int mStepID;
     private int mStepSize;
+    private static int mIndex = 0;
 
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
@@ -66,10 +67,10 @@ public class StepDisplayActivity extends AppCompatActivity implements View.OnCli
 
         if (null != getIntent()) {
             mSteps = getIntent().getExtras().getParcelableArrayList("steps");
-            mStep = getIntent().getExtras().getParcelable("step");
+            mIndex = getIntent().getExtras().getInt("position");
+            mStep = mSteps.get(mIndex);
             mVideoUrlStr = mStep.getmVideoUrl();
             mDescriptionStr = mStep.getmDescription();
-            mStepID = mStep.getmId();
             mStepSize = mSteps.size();
             initView();
         } else {
@@ -95,27 +96,10 @@ public class StepDisplayActivity extends AppCompatActivity implements View.OnCli
         mDescriptionTv.setText(mDescriptionStr);
 
         mPrevBt = (Button) findViewById(R.id.bt_prev);
+        mPrevBt.setOnClickListener(this);
         mNextBt = (Button) findViewById(R.id.bt_next);
+        mNextBt.setOnClickListener(this);
 
-        //TODO: check logic here
-        if (0 == mStepID) {
-            mPrevBt.setVisibility(View.INVISIBLE);
-            mNextBt.setVisibility(View.VISIBLE);
-            mNextBt.setText(getString(R.string.bt_next));
-            mNextBt.setOnClickListener(this);
-        } if (mStepSize == mStepID + 1) {
-            mNextBt.setVisibility(View.INVISIBLE);
-            mPrevBt.setVisibility(View.VISIBLE);
-            mPrevBt.setText(getString(R.string.bt_prev));
-            mPrevBt.setOnClickListener(this);
-        } else {
-            mPrevBt.setVisibility(View.VISIBLE);
-            mPrevBt.setText(getString(R.string.bt_prev));
-            mPrevBt.setOnClickListener(this);
-            mNextBt.setVisibility(View.VISIBLE);
-            mNextBt.setText(getString(R.string.bt_next));
-            mNextBt.setOnClickListener(this);
-        }
     }
 
     private void initializeMediaSession() {
@@ -190,23 +174,26 @@ public class StepDisplayActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if (null != mExoPlayer) {
-            mExoPlayer.stop();
-        }
-        //TODO: check the logic for First and Last steps
-        Intent intent = new Intent(StepDisplayActivity.this, StepDisplayActivity.class);
-        int index = 0;
-        if (v.getId() == R.id.bt_prev) {
-            index = --mStepID;
-        } else if (v.getId() == R.id.bt_next) {
-            index = ++mStepID;
-        }
-        mStep = mSteps.get(index);
-        intent.putExtra("step", mStep);
-        intent.putExtra("steps", mSteps);
-        finish();
-        startActivity(intent);
 
+        if (v.getId() == R.id.bt_prev) {
+            if (mIndex > 0) {
+                mIndex--;
+                releasePlayer();
+                mDescriptionTv.setText(mSteps.get(mIndex).getmDescription());
+                initializePlayer(Uri.parse(mSteps.get(mIndex).getmVideoUrl()));
+            } else {
+                Toast.makeText(this, getString(R.string.no_prev_step), Toast.LENGTH_LONG).show();
+            }
+        } else if (v.getId() == R.id.bt_next) {
+            if (mIndex < mStepSize - 1) {
+                mIndex++;
+                releasePlayer();
+                mDescriptionTv.setText(mSteps.get(mIndex).getmDescription());
+                initializePlayer(Uri.parse(mSteps.get(mIndex).getmVideoUrl()));
+            } else {
+                Toast.makeText(this, getString(R.string.no_next_step), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

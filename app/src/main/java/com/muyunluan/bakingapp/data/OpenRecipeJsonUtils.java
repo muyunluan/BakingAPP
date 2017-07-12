@@ -1,7 +1,5 @@
 package com.muyunluan.bakingapp.data;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +41,7 @@ public class OpenRecipeJsonUtils {
 
         JSONArray resultsArray = new JSONArray(recipeJsonStr);
         int arrLen = resultsArray.length();
-        Log.i(TAG, "getRecipesFromJson: Recipe objects num - " + arrLen);
+        //Log.i(TAG, "getRecipesFromJson: Recipe objects num - " + arrLen);
         BakingRecipe bakingRecipe = null;
         for (int i = 0; i < arrLen; i++) {
             JSONObject recipeObject = resultsArray.getJSONObject(i);
@@ -65,6 +63,7 @@ public class OpenRecipeJsonUtils {
 
             // generate Step object
             JSONArray stepsArray = recipeObject.getJSONArray(KEY_STEPS);
+            //Log.i(TAG, "getRecipesFromJson: get step array size - " + stepsArray.length());
             ArrayList<BakingRecipe.BakingStep> stepArrayList = new ArrayList<>();
             BakingRecipe.BakingStep bakingStep = null;
             for (int k = 0; k < stepsArray.length(); k++) {
