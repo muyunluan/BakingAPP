@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,8 +84,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         private ImageView recipeImg;
         private TextView recipeNameTv;
         private TextView recipeServingTv;
-        private Button shareBt;
-        private Button moreBt;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
@@ -97,8 +94,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipeNameTv.setBackgroundColor(Color.argb(20, 0, 0, 0));
             recipeServingTv = (TextView) itemView.findViewById(R.id.recipe_serving);
             recipeServingTv.setBackgroundColor(Color.argb(20, 0, 0, 0));
-            shareBt = (Button) itemView.findViewById(R.id.btn_share);
-            moreBt = (Button) itemView.findViewById(R.id.btn_more);
         }
     }
 }
