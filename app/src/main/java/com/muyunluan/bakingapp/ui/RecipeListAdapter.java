@@ -73,6 +73,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         }
     }
 
+    public void clear(){
+        mBakingRecipe.clear();
+    }
+
+
     @Override
     public int getItemCount() {
         return mBakingRecipe.size();

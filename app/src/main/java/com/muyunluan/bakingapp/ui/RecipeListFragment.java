@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
+import com.muyunluan.bakingapp.data.Constants;
 import com.muyunluan.bakingapp.data.NetworkUtils;
 import com.muyunluan.bakingapp.data.OpenRecipeJsonUtils;
 
@@ -41,13 +42,21 @@ public class RecipeListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (null != savedInstanceState) {
+            if (null != savedInstanceState.<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES)) {
+                mBakingRecipeData.clear();
+                mBakingRecipeData.addAll(savedInstanceState.<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES));
+            } else {
+                Log.d(TAG, "onCreate: no saved Recipe list");
+            }
+        } else {
+            Log.d(TAG, "onCreate: no savedInstanceState");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
@@ -64,7 +73,14 @@ public class RecipeListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        new RecipeQueryTask().execute();
+        if (0 == mBakingRecipeData.size()) {
+            //no saved data, fetch from API
+            new RecipeQueryTask().execute();
+        } else {
+            //update with saved data
+            mRecipesAdapter.clear();
+            mRecipesAdapter.addAll(mBakingRecipeData);
+        }
     }
 
     @Override
@@ -75,6 +91,12 @@ public class RecipeListFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(Constants.KEY_SAVED_RECIPES, mBakingRecipeData);
     }
 
     public class RecipeQueryTask extends AsyncTask<Void, Void, ArrayList<BakingRecipe>> {

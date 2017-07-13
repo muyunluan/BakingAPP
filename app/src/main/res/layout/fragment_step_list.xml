@@ -12,6 +12,7 @@
         android:id="@+id/tv_ingredients"
         style="@style/ingredientTitle"/>
 
+    <View style="@style/Divider"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_steps_list"

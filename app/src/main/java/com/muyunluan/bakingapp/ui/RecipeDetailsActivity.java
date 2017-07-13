@@ -56,7 +56,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
     @Override
     public void onListFragmentInteraction(int position) {
 
-        Intent intent = new Intent(this, StepDisplayActivity.class);
+        Intent intent = new Intent(this, StepDetailsActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("steps", mSteps);
         startActivity(intent);

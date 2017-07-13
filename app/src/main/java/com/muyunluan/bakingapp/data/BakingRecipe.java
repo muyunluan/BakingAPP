@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Copyright (c) 2017 Muyunluan. All rights reserved.
  */
 
-public class BakingRecipe {
+public class BakingRecipe implements Parcelable {
 
     private int mId;
     private String mName;
@@ -26,6 +26,27 @@ public class BakingRecipe {
         this.mSteps = mSteps;
         this.mServings = mServings;
     }
+
+    protected BakingRecipe(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+        mIngredients = in.createTypedArrayList(BakingIngredient.CREATOR);
+        mSteps = in.createTypedArrayList(BakingStep.CREATOR);
+        mServings = in.readInt();
+        mImageSource = in.readInt();
+    }
+
+    public static final Creator<BakingRecipe> CREATOR = new Creator<BakingRecipe>() {
+        @Override
+        public BakingRecipe createFromParcel(Parcel in) {
+            return new BakingRecipe(in);
+        }
+
+        @Override
+        public BakingRecipe[] newArray(int size) {
+            return new BakingRecipe[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -86,6 +107,23 @@ public class BakingRecipe {
     public void setmImageSource(int mImageSource) {
         this.mImageSource = mImageSource;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mName);
+        dest.writeTypedList(mIngredients);
+        dest.writeTypedList(mSteps);
+        dest.writeInt(mServings);
+        dest.writeInt(mImageSource);
+    }
+
+
 
 
     /* class for Ingredient */
