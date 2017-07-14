@@ -78,9 +78,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
             mSteps = getArguments().getParcelableArrayList("steps");
-            if (!isTablet) {
-                mIndex = getArguments().getInt("position");
-            }
+            mIndex = getArguments().getInt("position");
             mStep = mSteps.get(mIndex);
             mVideoUrlStr = mStep.getmVideoUrl();
             mDescriptionStr = mStep.getmDescription();
@@ -120,7 +118,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         if (isTablet) {
             mPrevBt.setVisibility(View.GONE);
             mNextBt.setVisibility(View.GONE);
-            mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT / 2;
+//            mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT / 2;
         }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet) {

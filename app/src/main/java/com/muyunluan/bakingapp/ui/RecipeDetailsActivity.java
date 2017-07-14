@@ -44,8 +44,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
             }
 
             if (getIntent().hasExtra(Constants.KEY_STEP)) {
-                args.putParcelableArrayList(Constants.KEY_STEP, getIntent().getParcelableArrayListExtra(Constants.KEY_STEP));
                 mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
+                args.putParcelableArrayList(Constants.KEY_STEP, mSteps);
             } else {
                 Log.e(TAG, "onCreate: No required Steps info being sent");
             }
@@ -54,6 +54,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         }
 
         if (!isTablet) {
+            Log.i(TAG, "onCreate: in phone");
             fragmentManager.beginTransaction().add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
         } else {
             fragmentManager.beginTransaction().add(R.id.frame_recipe, recipeDetailsFragment).commit();
