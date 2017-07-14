@@ -35,10 +35,6 @@ public class RecipeDetailsFragment extends Fragment {
     private ArrayList<BakingRecipe.BakingStep> mSteps = new ArrayList<>();
     private boolean hasSteps = false;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RecipeDetailsFragment() {
     }
 
@@ -61,7 +57,7 @@ public class RecipeDetailsFragment extends Fragment {
             mSteps = getArguments().getParcelableArrayList(Constants.KEY_STEP);
             if (null != mSteps && mSteps.size() > 0) {
                 hasSteps = true;
-                Log.i(TAG, "onCreate: get Steps size - " + mSteps.size());
+//                Log.i(TAG, "onCreate: get Steps size - " + mSteps.size());
             } else {
                 hasSteps = false;
                 Log.e(TAG, "onCreate: empty Steps or error to get Bundle info");

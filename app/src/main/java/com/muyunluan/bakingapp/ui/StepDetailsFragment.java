@@ -44,6 +44,10 @@ import java.util.ArrayList;
 
 import static com.muyunluan.bakingapp.MainActivity.isTablet;
 
+/**
+ * Created by Fei Deng on 7/13/17.
+ * Copyright (c) 2017 Muyunluan. All rights reserved.
+ */
 
 public class StepDetailsFragment extends Fragment implements View.OnClickListener, ExoPlayer.EventListener {
 
@@ -68,8 +72,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     public StepDetailsFragment() {
 
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,12 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         mPrevBt.setOnClickListener(this);
         mNextBt = (Button) view.findViewById(R.id.bt_next);
         mNextBt.setOnClickListener(this);
+
+        if (isTablet) {
+            mPrevBt.setVisibility(View.GONE);
+            mNextBt.setVisibility(View.GONE);
+            mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT / 2;
+        }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet) {
             mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;

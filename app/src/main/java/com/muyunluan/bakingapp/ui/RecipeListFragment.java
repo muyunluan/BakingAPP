@@ -67,10 +67,8 @@ public class RecipeListFragment extends Fragment {
 
         mRecipeListView = (RecyclerView) view.findViewById(R.id.rv_recipes);
         if (!isTablet) {
-            Log.i(TAG, "onCreateView: in Phone");
             mRecipeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
-            Log.i(TAG, "onCreateView: in Tablet");
             mRecipeListView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
 

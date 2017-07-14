@@ -54,10 +54,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         }
 
         if (!isTablet) {
-            Log.i(TAG, "onCreate: is Phone");
             fragmentManager.beginTransaction().add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
         } else {
-            Log.i(TAG, "onCreate: in Tabet");
             fragmentManager.beginTransaction().add(R.id.frame_recipe, recipeDetailsFragment).commit();
             StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
             Bundle b = new Bundle();
