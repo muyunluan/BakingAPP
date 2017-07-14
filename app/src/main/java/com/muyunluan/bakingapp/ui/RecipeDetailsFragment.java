@@ -73,7 +73,7 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_step_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe_details, container, false);
 
         TextView mRecipeTv = (TextView) view.findViewById(R.id.tv_ingredients);
         if (hasIngredients) {

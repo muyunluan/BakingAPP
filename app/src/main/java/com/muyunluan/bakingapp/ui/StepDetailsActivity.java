@@ -1,67 +1,30 @@
 package com.muyunluan.bakingapp.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.media.session.MediaButtonReceiver;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.muyunluan.bakingapp.R;
-import com.muyunluan.bakingapp.data.BakingRecipe;
 
-import java.util.ArrayList;
-
-import static com.muyunluan.bakingapp.MainActivity.isTwoPane;
-
-public class StepDetailsActivity extends AppCompatActivity implements View.OnClickListener, ExoPlayer.EventListener {
+public class StepDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = StepDetailsActivity.class.getSimpleName();
 
-    private ArrayList<BakingRecipe.BakingStep> mSteps = new ArrayList<>();
-    private BakingRecipe.BakingStep mStep;
-    private String mVideoUrlStr;
-    private String mDescriptionStr;
-    private int mStepSize;
-    private static int mIndex = 0;
-
-    private SimpleExoPlayer mExoPlayer;
-    private SimpleExoPlayerView mPlayerView;
-    private static MediaSessionCompat mMediaSession;
-    private PlaybackStateCompat.Builder mStateBuilder;
-
-    private TextView mDescriptionTv;
-    private Button mPrevBt;
-    private Button mNextBt;
+//    private ArrayList<BakingRecipe.BakingStep> mSteps = new ArrayList<>();
+//    private BakingRecipe.BakingStep mStep;
+//    private String mVideoUrlStr;
+//    private String mDescriptionStr;
+//    private int mStepSize;
+//    private static int mIndex = 0;
+//
+//    private SimpleExoPlayer mExoPlayer;
+//    private SimpleExoPlayerView mPlayerView;
+//    private static MediaSessionCompat mMediaSession;
+//    private PlaybackStateCompat.Builder mStateBuilder;
+//
+//    private TextView mDescriptionTv;
+//    private Button mPrevBt;
+//    private Button mNextBt;
 
 
     @Override
@@ -69,19 +32,37 @@ public class StepDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_details);
 
+//        if (null != getIntent()) {
+//            mSteps = getIntent().getExtras().getParcelableArrayList("steps");
+//            mIndex = getIntent().getExtras().getInt("position");
+//            mStep = mSteps.get(mIndex);
+//            mVideoUrlStr = mStep.getmVideoUrl();
+//            mDescriptionStr = mStep.getmDescription();
+//            mStepSize = mSteps.size();
+//            initView();
+//        } else {
+//            Log.e(TAG, "onCreate: empty Bundle for Step object");
+//        }
+
         if (null != getIntent()) {
-            mSteps = getIntent().getExtras().getParcelableArrayList("steps");
-            mIndex = getIntent().getExtras().getInt("position");
-            mStep = mSteps.get(mIndex);
-            mVideoUrlStr = mStep.getmVideoUrl();
-            mDescriptionStr = mStep.getmDescription();
-            mStepSize = mSteps.size();
-            initView();
+            Log.i(TAG, "onCreate: has bundle");
+            Bundle args = new Bundle();
+            if (getIntent().hasExtra("position")) {
+                Log.i(TAG, "onCreate: has desired info");
+                args.putInt("position", getIntent().getExtras().getInt("position"));
+                args.putParcelableArrayList("steps", getIntent().getExtras().getParcelableArrayList("steps"));
+            } else {
+                Log.e(TAG, "onCreate: no desired info found");
+            }
         } else {
             Log.e(TAG, "onCreate: empty Bundle for Step object");
         }
+        getSupportFragmentManager().beginTransaction().add(R.id .frame_step_details, new StepDetailsFragment()).commit();
+
     }
 
+
+    /*
     private void initView() {
         mPlayerView = (SimpleExoPlayerView) findViewById(R.id.pv_step);
 
@@ -104,7 +85,7 @@ public class StepDetailsActivity extends AppCompatActivity implements View.OnCli
         mNextBt = (Button) findViewById(R.id.bt_next);
         mNextBt.setOnClickListener(this);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTwoPane) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet) {
             mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             mDescriptionTv.setVisibility(View.GONE);
             mPrevBt.setVisibility(View.GONE);
@@ -297,4 +278,6 @@ public class StepDetailsActivity extends AppCompatActivity implements View.OnCli
             MediaButtonReceiver.handleIntent(mMediaSession, intent);
         }
     }
+
+    */
 }

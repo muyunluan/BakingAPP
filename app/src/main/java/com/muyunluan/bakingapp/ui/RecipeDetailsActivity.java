@@ -2,7 +2,7 @@ package com.muyunluan.bakingapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -11,6 +11,8 @@ import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
 
 import java.util.ArrayList;
+
+import static com.muyunluan.bakingapp.MainActivity.isTablet;
 
 /**
  * Created by Fei Deng on 6/30/17.
@@ -28,7 +30,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
         RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
 
         if (null != getIntent()) {
@@ -50,12 +53,22 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
             recipeDetailsFragment.setArguments(args);
         }
 
-        transaction.add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
+        if (!isTablet) {
+            Log.i(TAG, "onCreate: is Phone");
+            fragmentManager.beginTransaction().add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
+        } else {
+            Log.i(TAG, "onCreate: in Tabet");
+            fragmentManager.beginTransaction().add(R.id.frame_recipe, recipeDetailsFragment).commit();
+            StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+            Bundle b = new Bundle();
+            b.putParcelableArrayList("steps", mSteps);
+            stepDetailsFragment.setArguments(b);
+            fragmentManager.beginTransaction().add(R.id.frame_step, stepDetailsFragment).commit();
+        }
     }
 
     @Override
     public void onListFragmentInteraction(int position) {
-
         Intent intent = new Intent(this, StepDetailsActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("steps", mSteps);

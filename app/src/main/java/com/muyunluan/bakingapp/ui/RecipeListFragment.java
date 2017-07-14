@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,8 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static com.muyunluan.bakingapp.MainActivity.isTablet;
 
 /**
  * Created by Fei Deng on 6/28/17.
@@ -63,7 +66,14 @@ public class RecipeListFragment extends Fragment {
         mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
 
         mRecipeListView = (RecyclerView) view.findViewById(R.id.rv_recipes);
-        mRecipeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (!isTablet) {
+            Log.i(TAG, "onCreateView: in Phone");
+            mRecipeListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            Log.i(TAG, "onCreateView: in Tablet");
+            mRecipeListView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
+
         mRecipeListView.setHasFixedSize(true);
         mRecipeListView.setAdapter(mRecipesAdapter);
 

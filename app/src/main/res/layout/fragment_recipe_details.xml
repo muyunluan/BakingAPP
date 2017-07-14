@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.muyunluan.bakingapp.ui.RecipeDetailsFragment">
+
 
     <TextView
-        android:id="@+id/tv_step_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:id="@+id/tv_ingredients"
+        style="@style/ingredientTitle"/>
 
-    <TextView
-        android:id="@+id/tv_step_short_des"
-        android:layout_width="wrap_content"
+    <View style="@style/Divider"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_steps_list"
+        android:name="com.muyunluan.bakingapp.ui.RecipeDetailsFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:listitem="@layout/step_list_item" >
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
 </LinearLayout>
+
+
+
+
