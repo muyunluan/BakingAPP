@@ -118,7 +118,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         if (isTablet) {
             mPrevBt.setVisibility(View.GONE);
             mNextBt.setVisibility(View.GONE);
-//            mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT / 2;
         }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet) {

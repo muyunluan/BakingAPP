@@ -68,9 +68,19 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
 
     @Override
     public void onListFragmentInteraction(int position) {
-        Intent intent = new Intent(this, StepDetailsActivity.class);
-        intent.putExtra("position", position);
-        intent.putExtra("steps", mSteps);
-        startActivity(intent);
+        if (!isTablet) {
+
+            Intent intent = new Intent(this, StepDetailsActivity.class);
+            intent.putExtra("position", position);
+            intent.putExtra("steps", mSteps);
+            startActivity(intent);
+        } else {
+            StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+            Bundle b = new Bundle();
+            b.putInt("position", position);
+            b.putParcelableArrayList("steps", mSteps);
+            stepDetailsFragment.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_step, stepDetailsFragment).commit();
+        }
     }
 }
