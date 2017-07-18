@@ -16,6 +16,11 @@
 
         <View style="@style/Divider"/>
 
+        <ImageView
+            android:id="@+id/img_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

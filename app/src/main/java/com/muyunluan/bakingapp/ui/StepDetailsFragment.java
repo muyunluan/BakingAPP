@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,6 +57,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
 
     private ArrayList<BakingRecipe.BakingStep> mSteps = new ArrayList<>();
     private BakingRecipe.BakingStep mStep;
+    private String mThumbnailUrlStr;
     private String mVideoUrlStr;
     private String mDescriptionStr;
     private int mStepSize;
@@ -65,6 +68,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
+    private ImageView mStepImg;
     private TextView mDescriptionTv;
     private Button mPrevBt;
     private Button mNextBt;
@@ -80,6 +84,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             mSteps = getArguments().getParcelableArrayList("steps");
             mIndex = getArguments().getInt("position");
             mStep = mSteps.get(mIndex);
+            mThumbnailUrlStr = mStep.getmThumbnailUrl();
             mVideoUrlStr = mStep.getmVideoUrl();
             mDescriptionStr = mStep.getmDescription();
             mStepSize = mSteps.size();
@@ -105,6 +110,13 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             // Load the question mark as the background image for empty video url
             mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
                     (getResources(), R.drawable.question_mark));
+        }
+
+        mStepImg = (ImageView) view.findViewById(R.id.img_thumbnail);
+        if (!TextUtils.isEmpty(mThumbnailUrlStr)) {
+            Picasso.with(getContext()).load(mThumbnailUrlStr).into(mStepImg);
+        } else {
+            Log.d(TAG, "onCreateView: no URL for image URL");
         }
 
         mDescriptionTv = (TextView) view.findViewById(R.id.tv_description);
@@ -149,6 +161,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         if (null != mExoPlayer) {
             mExoPlayer.setPlayWhenReady(false);
         }
+        releasePlayer();
         mMediaSession.setActive(false);
     }
 

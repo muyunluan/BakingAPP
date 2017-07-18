@@ -82,7 +82,8 @@ public class OpenRecipeJsonUtils {
             // generate Recipe object
             bakingRecipe = new BakingRecipe(idInt, nameStr, ingredientArrayList, stepArrayList, servingInt);
             // set up source for image
-            bakingRecipe.setmImageSource(Constants.recipeImages[i]);
+            String imageUrlStr = recipeObject.getString(KEY_IMAGE);
+            bakingRecipe.setmImageSource(imageUrlStr);
             parsedRecipeData.add(bakingRecipe);
         }
     }

@@ -17,7 +17,7 @@ public class BakingRecipe implements Parcelable {
     private ArrayList<BakingIngredient> mIngredients;
     private ArrayList<BakingStep> mSteps;
     private int mServings;
-    private int mImageSource;
+    private String mImageSource;
 
     public BakingRecipe(int mId, String mName, ArrayList<BakingIngredient> mIngredients, ArrayList<BakingStep> mSteps, int mServings) {
         this.mId = mId;
@@ -33,7 +33,7 @@ public class BakingRecipe implements Parcelable {
         mIngredients = in.createTypedArrayList(BakingIngredient.CREATOR);
         mSteps = in.createTypedArrayList(BakingStep.CREATOR);
         mServings = in.readInt();
-        mImageSource = in.readInt();
+        mImageSource = in.readString();
     }
 
     public static final Creator<BakingRecipe> CREATOR = new Creator<BakingRecipe>() {
@@ -100,11 +100,11 @@ public class BakingRecipe implements Parcelable {
         this.mServings = mServings;
     }
 
-    public int getmImageSource() {
+    public String getmImageSource() {
         return mImageSource;
     }
 
-    public void setmImageSource(int mImageSource) {
+    public void setmImageSource(String mImageSource) {
         this.mImageSource = mImageSource;
     }
 
@@ -120,7 +120,7 @@ public class BakingRecipe implements Parcelable {
         dest.writeTypedList(mIngredients);
         dest.writeTypedList(mSteps);
         dest.writeInt(mServings);
-        dest.writeInt(mImageSource);
+        dest.writeString(mImageSource);
     }
 
 

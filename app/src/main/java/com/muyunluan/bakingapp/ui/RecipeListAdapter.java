@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,7 +49,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(RecipeViewHolder holder, final int position) {
         BakingRecipe bakingRecipe = mBakingRecipe.get(position);
         //Log.i(TAG, "onBindViewHolder: get Baking Recipe - " + bakingRecipe.toString());
-        holder.recipeImg.setImageResource(bakingRecipe.getmImageSource());
+
+        if (!TextUtils.isEmpty(bakingRecipe.getmImageSource())) {
+            Picasso.with(mContext).load(bakingRecipe.getmImageSource()).into(holder.recipeImg);
+        } else {
+            holder.recipeImg.setImageResource(Constants.recipeImages[position]);
+        }
         holder.recipeNameTv.setText(bakingRecipe.getmName());
         holder.recipeServingTv.setText(String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
 
