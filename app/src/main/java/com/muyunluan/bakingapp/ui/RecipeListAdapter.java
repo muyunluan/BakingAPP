@@ -39,7 +39,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View rootView = LayoutInflater.from(mContext).inflate(R.layout.recipe_list_item, parent, false);
+        View rootView = LayoutInflater.from(mContext)
+                .inflate(R.layout.recipe_list_item, parent, false);
 
         RecipeViewHolder recipeViewHolder = new RecipeViewHolder(rootView);
         return recipeViewHolder;
@@ -56,7 +57,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             holder.recipeImg.setImageResource(Constants.recipeImages[position]);
         }
         holder.recipeNameTv.setText(bakingRecipe.getmName());
-        holder.recipeServingTv.setText(String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
+        holder.recipeServingTv.setText(
+                String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

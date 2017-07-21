@@ -46,9 +46,11 @@ public class RecipeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != savedInstanceState) {
-            if (null != savedInstanceState.<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES)) {
+            if (null != savedInstanceState
+                    .<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES)) {
                 mBakingRecipeData.clear();
-                mBakingRecipeData.addAll(savedInstanceState.<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES));
+                mBakingRecipeData.addAll(
+                        savedInstanceState.<BakingRecipe>getParcelableArrayList(Constants.KEY_SAVED_RECIPES));
             } else {
                 Log.d(TAG, "onCreate: no saved Recipe list");
             }
@@ -113,7 +115,8 @@ public class RecipeListFragment extends Fragment {
         protected ArrayList<BakingRecipe> doInBackground(Void... params) {
 
             try {
-                String jsonRecipeResponse = NetworkUtils.getResponseFromHttpUrl(OpenRecipeJsonUtils.RECIPE_URL);
+                String jsonRecipeResponse = NetworkUtils
+                        .getResponseFromHttpUrl(OpenRecipeJsonUtils.RECIPE_URL);
                 OpenRecipeJsonUtils.getRecipesFromJson(jsonRecipeResponse, mBakingRecipeData);
                 //Log.i(TAG, "doInBackground: updated Baking Recipe data size - " + mBakingRecipeData.size());
                 return mBakingRecipeData;
@@ -128,7 +131,11 @@ public class RecipeListFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<BakingRecipe> bakingRecipes) {
             if (null != bakingRecipes && 0 < bakingRecipes.size()) {
-                mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
+                try {
+                    mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
+                } catch (IllegalStateException e) {
+                    Log.e(TAG, "onPostExecute: error to init RecipeListAdapter - " + e.getMessage());
+                }
                 mRecipeListView.setAdapter(mRecipesAdapter);
                 //Log.i(TAG, "onPostExecute: post Recipes len - " + bakingRecipes.size());
                 mRecipesAdapter.addAll(bakingRecipes);

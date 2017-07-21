@@ -51,7 +51,9 @@ import static com.muyunluan.bakingapp.MainActivity.isTablet;
  * Copyright (c) 2017 Muyunluan. All rights reserved.
  */
 
-public class StepDetailsFragment extends Fragment implements View.OnClickListener, ExoPlayer.EventListener {
+public class StepDetailsFragment extends Fragment implements
+        View.OnClickListener,
+        ExoPlayer.EventListener {
 
     private static final String TAG = StepDetailsFragment.class.getSimpleName();
 
@@ -108,8 +110,8 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         } else {
             Log.e(TAG, "initView: empty Video URL");
             // Load the question mark as the background image for empty video url
-            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource
-                    (getResources(), R.drawable.question_mark));
+            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(
+                    getResources(), R.drawable.question_mark));
         }
 
         mStepImg = (ImageView) view.findViewById(R.id.img_thumbnail);
@@ -132,12 +134,16 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             mNextBt.setVisibility(View.GONE);
         }
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !isTablet) {
+        if (getResources().getConfiguration().orientation
+                ==
+                Configuration.ORIENTATION_LANDSCAPE
+                &&
+                !isTablet) {
             mPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             mDescriptionTv.setVisibility(View.GONE);
             mPrevBt.setVisibility(View.GONE);
             mNextBt.setVisibility(View.GONE);
-            hideSystemUI();
+            hideSystemUi();
         }
 
         return view;
@@ -162,7 +168,7 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             mExoPlayer.setPlayWhenReady(false);
         }
         releasePlayer();
-        mMediaSession.setActive(false);
+
     }
 
     @Override
@@ -172,14 +178,20 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         mMediaSession.setActive(false);
     }
 
-    private void hideSystemUI() {
-        getActivity().getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    private void hideSystemUi() {
+        getActivity().getWindow().getDecorView()
+                .setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN
+                        |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     private void initializeMediaSession() {
@@ -189,7 +201,8 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             mMediaSession = new MediaSessionCompat(getContext(), TAG);
             // Enable callbacks from MediaButtons and TransportControls.
             mMediaSession.setFlags(
-                    MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                            MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS
+                            |
                             MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
             // Do not let MediaButtons restart the player when the app is not visible.
@@ -197,14 +210,16 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
 
             // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
             mStateBuilder = new PlaybackStateCompat.Builder()
-                    .setActions(
-                            PlaybackStateCompat.ACTION_PLAY |
-                                    PlaybackStateCompat.ACTION_PAUSE |
-                                    PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+                            .setActions(
+                                    PlaybackStateCompat.ACTION_PLAY
+                                    |
+                                    PlaybackStateCompat.ACTION_PAUSE
+                                    |
+                                    PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                                    |
                                     PlaybackStateCompat.ACTION_PLAY_PAUSE);
 
             mMediaSession.setPlaybackState(mStateBuilder.build());
-
 
             // MySessionCallback has methods that handle callbacks from a media controller.
             mMediaSession.setCallback(new MySessionCallback());
@@ -215,9 +230,6 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         } catch (Exception e) {
             Log.e(TAG, "initializeMediaSession: " + e.toString() );
         }
-
-
-
     }
 
 
@@ -226,7 +238,10 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                    getContext(),
+                    trackSelector,
+                    loadControl);
             mPlayerView.setPlayer(mExoPlayer);
 
             // Set the ExoPlayer.EventListener to this activity.
@@ -234,8 +249,11 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
 
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getContext(), "BakingApp");
-            MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                    getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
+
+            MediaSource mediaSource = new ExtractorMediaSource(
+                    mediaUri,
+                    new DefaultDataSourceFactory(getActivity(), userAgent),
+                    new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
         }
@@ -249,6 +267,11 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
         } else {
             Log.e(TAG, "releasePlayer: empty ExoPlayer");
         }
+        if (null != mMediaSession) {
+            mMediaSession.setActive(false);
+        } else {
+            Log.e(TAG, "releasePlayer: empty MediaSession");
+        }
     }
 
     @Override
@@ -261,7 +284,10 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
                 mDescriptionTv.setText(mSteps.get(mIndex).getmDescription());
                 initializePlayer(Uri.parse(mSteps.get(mIndex).getmVideoUrl()));
             } else {
-                Toast.makeText(getContext(), getString(R.string.no_prev_step), Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        getContext(),
+                        getString(R.string.no_prev_step),
+                        Toast.LENGTH_LONG).show();
             }
         } else if (v.getId() == R.id.bt_next) {
             if (mIndex < mStepSize - 1) {
@@ -270,7 +296,10 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
                 mDescriptionTv.setText(mSteps.get(mIndex).getmDescription());
                 initializePlayer(Uri.parse(mSteps.get(mIndex).getmVideoUrl()));
             } else {
-                Toast.makeText(getContext(), getString(R.string.no_next_step), Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        getContext(),
+                        getString(R.string.no_next_step),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -292,10 +321,10 @@ public class StepDetailsFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
+        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
                     mExoPlayer.getCurrentPosition(), 1f);
-        } else if((playbackState == ExoPlayer.STATE_READY)){
+        } else if (playbackState == ExoPlayer.STATE_READY) {
             mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
                     mExoPlayer.getCurrentPosition(), 1f);
         }

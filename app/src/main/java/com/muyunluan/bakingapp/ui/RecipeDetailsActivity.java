@@ -30,39 +30,51 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (null == savedInstanceState) {
 
-        RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (null != getIntent()) {
-            Bundle args = new Bundle();
+            RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
 
-            if (getIntent().hasExtra(Constants.KEY_INDREDIENT)) {
-                args.putParcelableArrayList(Constants.KEY_INDREDIENT, getIntent().getParcelableArrayListExtra(Constants.KEY_INDREDIENT));
-            } else {
-                Log.e(TAG, "onCreate: No required Ingredients info being sent");
+            if (null != getIntent()) {
+                Bundle args = new Bundle();
+
+                if (getIntent().hasExtra(Constants.KEY_INDREDIENT)) {
+                    args.putParcelableArrayList(
+                            Constants.KEY_INDREDIENT,
+                            getIntent().getParcelableArrayListExtra(Constants.KEY_INDREDIENT));
+                } else {
+                    Log.e(TAG, "onCreate: No required Ingredients info being sent");
+                }
+
+                if (getIntent().hasExtra(Constants.KEY_STEP)) {
+                    mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
+                    args.putParcelableArrayList(Constants.KEY_STEP, mSteps);
+                } else {
+                    Log.e(TAG, "onCreate: No required Steps info being sent");
+                }
+
+                recipeDetailsFragment.setArguments(args);
             }
 
-            if (getIntent().hasExtra(Constants.KEY_STEP)) {
-                mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
-                args.putParcelableArrayList(Constants.KEY_STEP, mSteps);
+            if (!isTablet) {
+                Log.i(TAG, "onCreate: in phone");
+                fragmentManager.beginTransaction().add(
+                        R.id.recipe_details_frame,
+                        recipeDetailsFragment).commit();
             } else {
-                Log.e(TAG, "onCreate: No required Steps info being sent");
+                fragmentManager.beginTransaction().add(
+                        R.id.frame_recipe,
+                        recipeDetailsFragment).commit();
+                StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
+                Bundle b = new Bundle();
+                b.putParcelableArrayList("steps", mSteps);
+                stepDetailsFragment.setArguments(b);
+                fragmentManager.beginTransaction().add(
+                        R.id.frame_step,
+                        stepDetailsFragment).commit();
             }
 
-            recipeDetailsFragment.setArguments(args);
-        }
-
-        if (!isTablet) {
-            Log.i(TAG, "onCreate: in phone");
-            fragmentManager.beginTransaction().add(R.id.recipe_details_frame, recipeDetailsFragment).commit();
-        } else {
-            fragmentManager.beginTransaction().add(R.id.frame_recipe, recipeDetailsFragment).commit();
-            StepDetailsFragment stepDetailsFragment = new StepDetailsFragment();
-            Bundle b = new Bundle();
-            b.putParcelableArrayList("steps", mSteps);
-            stepDetailsFragment.setArguments(b);
-            fragmentManager.beginTransaction().add(R.id.frame_step, stepDetailsFragment).commit();
         }
     }
 
@@ -80,7 +92,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
             b.putInt("position", position);
             b.putParcelableArrayList("steps", mSteps);
             stepDetailsFragment.setArguments(b);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_step, stepDetailsFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.frame_step,
+                    stepDetailsFragment).commit();
         }
     }
 }

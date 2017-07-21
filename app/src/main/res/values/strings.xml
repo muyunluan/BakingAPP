@@ -13,4 +13,6 @@
     <string name="no_prev_step">No previous step exists!</string>
     <string name="no_next_step">No next step exists!</string>
     <string name="empty_ingredient">Empty Ingredient</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
