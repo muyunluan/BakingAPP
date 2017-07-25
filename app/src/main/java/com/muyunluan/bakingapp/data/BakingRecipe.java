@@ -19,7 +19,11 @@ public class BakingRecipe implements Parcelable {
     private int mServings;
     private String mImageSource;
 
-    public BakingRecipe(int mId, String mName, ArrayList<BakingIngredient> mIngredients, ArrayList<BakingStep> mSteps, int mServings) {
+    public BakingRecipe(int mId,
+                        String mName,
+                        ArrayList<BakingIngredient> mIngredients,
+                        ArrayList<BakingStep> mSteps,
+                        int mServings) {
         this.mId = mId;
         this.mName = mName;
         this.mIngredients = mIngredients;
@@ -50,13 +54,20 @@ public class BakingRecipe implements Parcelable {
 
     @Override
     public String toString() {
-        return "BakingRecipe{" +
-                "mId=" + mId +
-                ", mName='" + mName + '\'' +
-                ", mIngredients=" + mIngredients +
-                ", mSteps=" + mSteps +
-                ", mServings=" + mServings +
-                ", mImageSource='" + mImageSource + '\'' +
+        return "BakingRecipe{"
+                +
+                "mId=" + mId
+                +
+                ", mName='" + mName + '\''
+                +
+                ", mIngredients=" + mIngredients
+                +
+                ", mSteps=" + mSteps
+                +
+                ", mServings=" + mServings
+                +
+                ", mImageSource='" + mImageSource + '\''
+                +
                 '}';
     }
 
@@ -213,7 +224,11 @@ public class BakingRecipe implements Parcelable {
         private String mVideoUrl;
         private String mThumbnailUrl;
 
-        public BakingStep(int mId, String mShortDescription, String mDescription, String mVideoUrl, String mThumbnailUrl) {
+        public BakingStep(int mId,
+                          String mShortDescription,
+                          String mDescription,
+                          String mVideoUrl,
+                          String mThumbnailUrl) {
             this.mId = mId;
             this.mShortDescription = mShortDescription;
             this.mDescription = mDescription;
@@ -243,12 +258,18 @@ public class BakingRecipe implements Parcelable {
 
         @Override
         public String toString() {
-            return "BakingStep{" +
-                    "mId=" + mId +
-                    ", mShortDescription='" + mShortDescription + '\'' +
-                    ", mDescription='" + mDescription + '\'' +
-                    ", mVideoUrl='" + mVideoUrl + '\'' +
-                    ", mThumbnailUrl='" + mThumbnailUrl + '\'' +
+            return "BakingStep{"
+                    +
+                    "mId=" + mId
+                    +
+                    ", mShortDescription='" + mShortDescription + '\''
+                    +
+                    ", mDescription='" + mDescription + '\''
+                    +
+                    ", mVideoUrl='" + mVideoUrl + '\''
+                    +
+                    ", mThumbnailUrl='" + mThumbnailUrl + '\''
+                    +
                     '}';
         }
 

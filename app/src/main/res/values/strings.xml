@@ -15,4 +15,5 @@
     <string name="empty_ingredient">Empty Ingredient</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="favorite">Add to Favorites:</string>
 </resources>

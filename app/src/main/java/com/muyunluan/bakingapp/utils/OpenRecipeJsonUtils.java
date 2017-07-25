@@ -1,4 +1,6 @@
-package com.muyunluan.bakingapp.data;
+package com.muyunluan.bakingapp.utils;
+
+import com.muyunluan.bakingapp.data.BakingRecipe;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +39,9 @@ public class OpenRecipeJsonUtils {
     private static final String KEY_STEP_VIDEO_URL = "videoURL";
     private static final String KEY_STEP_THUMBNAIL_URL = "thumbnailURL";
 
-    public static void getRecipesFromJson(String recipeJsonStr, ArrayList<BakingRecipe> parsedRecipeData) throws JSONException {
+    public static void getRecipesFromJson(String recipeJsonStr,
+                                          ArrayList<BakingRecipe> parsedRecipeData)
+                                            throws JSONException {
 
         JSONArray resultsArray = new JSONArray(recipeJsonStr);
         int arrLen = resultsArray.length();
@@ -57,7 +61,8 @@ public class OpenRecipeJsonUtils {
                 int quantityInt = ingredientObject.getInt(KEY_INGREDIENT_QUANTITY);
                 String measureStr = ingredientObject.getString(KEY_INGREDIENT_MEASURE);
                 String ingredientStr = ingredientObject.getString(KEY_INGREDIENT);
-                bakingIngredient = new BakingRecipe.BakingIngredient(quantityInt, measureStr, ingredientStr);
+                bakingIngredient = new BakingRecipe.BakingIngredient(quantityInt,
+                                                        measureStr, ingredientStr);
                 ingredientArrayList.add(bakingIngredient);
             }
 

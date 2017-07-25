@@ -11,12 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
-import com.muyunluan.bakingapp.data.NetworkUtils;
-import com.muyunluan.bakingapp.data.OpenRecipeJsonUtils;
+import com.muyunluan.bakingapp.utils.NetworkUtils;
+import com.muyunluan.bakingapp.utils.OpenRecipeJsonUtils;
 
 import org.json.JSONException;
 
@@ -131,16 +132,13 @@ public class RecipeListFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<BakingRecipe> bakingRecipes) {
             if (null != bakingRecipes && 0 < bakingRecipes.size()) {
-                try {
-                    mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
-                } catch (IllegalStateException e) {
-                    Log.e(TAG, "onPostExecute: error to init RecipeListAdapter - " + e.getMessage());
-                }
+                mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
                 mRecipeListView.setAdapter(mRecipesAdapter);
                 //Log.i(TAG, "onPostExecute: post Recipes len - " + bakingRecipes.size());
                 mRecipesAdapter.addAll(bakingRecipes);
                 mRecipesAdapter.notifyDataSetChanged();
             } else {
+                Toast.makeText(getContext(), "Empty Recipe data", Toast.LENGTH_LONG).show();
                 Log.e(TAG, "onPostExecute: empty Recipe data");
             }
         }
