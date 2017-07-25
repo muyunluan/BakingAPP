@@ -1,15 +1,12 @@
 package com.muyunluan.bakingapp.ui;
 
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,7 @@ import android.widget.TextView;
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
-import com.muyunluan.bakingapp.data.database.FavoriteContract;
+import com.muyunluan.bakingapp.data.SharedPreferenceUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,6 +35,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     private Context mContext;
     private ArrayList<BakingRecipe> mBakingRecipe;
     private BakingRecipe bakingRecipe;
+    private SharedPreferenceUtil sharedPreferenceUtil;
 
     public RecipeListAdapter(ArrayList<BakingRecipe> mBakingRecipe) {
         this.mBakingRecipe = mBakingRecipe;
@@ -63,20 +61,23 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         } else {
             holder.recipeImg.setImageResource(Constants.recipeImages[position]);
         }
+
         holder.recipeNameTv.setText(bakingRecipe.getmName());
         holder.recipeServingTv.setText(
                 String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
 
-        toggleFavorite(holder);
+        sharedPreferenceUtil = SharedPreferenceUtil.getInstance(mContext);
+
+        toggleFavorite(holder, position + 1);
         holder.favoriteBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isFavorite()) {
-                    addToFavorites();
+                if (!sharedPreferenceUtil.getRecipeIsFavorite(position + 1)) {
+                    sharedPreferenceUtil.setFavoriteRecipeWithId(true, position + 1);
                 } else {
-                    removeFromFavorites();
+                    sharedPreferenceUtil.setFavoriteRecipeWithId(false, position + 1);
                 }
-                toggleFavorite(holder);
+                toggleFavorite(holder, position + 1);
             }
         });
 
@@ -92,6 +93,15 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     }
 
+    private void toggleFavorite(RecipeViewHolder holder, int id) {
+        if (sharedPreferenceUtil.getRecipeIsFavorite(id)) {
+            holder.favoriteBt.setImageResource(R.mipmap.ic_star);
+        } else {
+            holder.favoriteBt.setImageResource(R.mipmap.ic_unstar);
+        }
+    }
+
+
     public void addAll(ArrayList<BakingRecipe> bakingRecipes) {
         if (null != bakingRecipes && !bakingRecipes.isEmpty()) {
             mBakingRecipe.clear();
@@ -106,51 +116,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         mBakingRecipe.clear();
     }
 
-    private void toggleFavorite(RecipeViewHolder holder) {
-        if (isFavorite()) {
-            holder.favoriteBt.setImageResource(R.mipmap.ic_star);
-        } else {
-            holder.favoriteBt.setImageResource(R.mipmap.ic_unstar);
-        }
-    }
-
-    private boolean isFavorite() {
-        Uri uri = ContentUris.withAppendedId(FavoriteContract.FavoriteEntry.CONTENT_URI, (long)bakingRecipe.getmId());
-        Cursor cursor = null;
-
-        try {
-            cursor = mContext.getContentResolver().query(uri, null, null, null, null);
-            if (null == cursor) {
-                return false;
-            } else if (cursor.moveToFirst()) {
-                    return true;
-            }
-
-        } finally {
-            if (null != cursor) {
-                cursor.close();
-            }
-        }
-        return false;
-    }
-
-    private void addToFavorites() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.clear();
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_ID, bakingRecipe.getmId());
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_NAME, bakingRecipe.getmName());
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_SERVINGS, bakingRecipe.getmServings());
-        contentValues.put(FavoriteContract.FavoriteEntry.COLUMN_IMAGE, bakingRecipe.getmImageSource());
-
-        Uri uri = mContext.getContentResolver().insert(FavoriteContract.FavoriteEntry.CONTENT_URI, contentValues);
-        //Log.i(TAG, "addToFavorites: new URI - " + uri.toString());
-    }
-
-    private void removeFromFavorites() {
-        String mSelectionClause = FavoriteContract.FavoriteEntry.COLUMN_ID + " = ? ";
-        String[] mSelectionArgs = {bakingRecipe.getmId() + ""};
-        long mRowsDeleted = mContext.getContentResolver().delete(FavoriteContract.FavoriteEntry.CONTENT_URI, mSelectionClause, mSelectionArgs);
-    }
 
     @Override
     public int getItemCount() {
@@ -180,4 +145,5 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
 
     }
+
 }

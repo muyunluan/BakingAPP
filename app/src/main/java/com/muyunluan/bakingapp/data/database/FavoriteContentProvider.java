@@ -22,7 +22,7 @@ import static com.muyunluan.bakingapp.data.database.FavoriteContract.FavoriteEnt
 public class FavoriteContentProvider extends ContentProvider {
 
     public static final int FAVORITE_RECIPE = 100;
-    public static final int FAVORITE_RECIPE_WITH_ID = 100;
+    public static final int FAVORITE_RECIPE_WITH_ID = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -55,19 +55,23 @@ public class FavoriteContentProvider extends ContentProvider {
 
         switch (match) {
             case FAVORITE_RECIPE:
-                retCursor = builder.query(
-                        db,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
+
+                break;
+            case FAVORITE_RECIPE_WITH_ID:
+                builder.appendWhere(
+                        FavoriteContract.FavoriteEntry.COLUMN_ID + " = " + uri.getLastPathSegment());
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-
+        retCursor = builder.query(
+                db,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder);
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
@@ -77,6 +81,8 @@ public class FavoriteContentProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case FAVORITE_RECIPE:
                 return FavoriteContract.FavoriteEntry.CONTENT_TYPE;
+            case FAVORITE_RECIPE_WITH_ID:
+                return FavoriteContract.FavoriteEntry.CONTENT_ITEM_TYPE;
             default:
                 return null;
         }
@@ -115,8 +121,9 @@ public class FavoriteContentProvider extends ContentProvider {
         int favoritesDeleted;
 
         switch (match) {
-            case FAVORITE_RECIPE_WITH_ID:
-                favoritesDeleted = db.delete(FavoriteContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
+            case FAVORITE_RECIPE:
+                favoritesDeleted = db.delete(FavoriteContract.FavoriteEntry.TABLE_NAME,
+                                            selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

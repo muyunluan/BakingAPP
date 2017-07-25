@@ -13,7 +13,7 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "favoriteRecipeDb.db";
 
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     public FavoriteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
@@ -33,7 +33,7 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
                 +
                 FavoriteContract.FavoriteEntry.COLUMN_SERVINGS + " INTEGER NOT NULL, "
                 +
-                FavoriteContract.FavoriteEntry.COLUMN_IMAGE + " TEXT, "
+                FavoriteContract.FavoriteEntry.COLUMN_IMAGE + " TEXT NOT NULL, "
                 +
                 "UNIQUE (" + FavoriteContract.FavoriteEntry.COLUMN_ID + ") ON CONFLICT IGNORE );";
 

@@ -22,6 +22,9 @@ public class FavoriteContract {
         public static final String CONTENT_TYPE =
                                 "vnd.android.cursor.dir/" + AUTHORITY + "/" + PATH_FAVORITES;
 
+        public static final String CONTENT_ITEM_TYPE =
+                                "vnd.android.cursor.dir/" + AUTHORITY + "/" + PATH_FAVORITES;
+
         public static final String TABLE_NAME = "favorites";
 
         public static final String COLUMN_ID = "id";
