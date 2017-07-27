@@ -59,53 +59,44 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
 
     @Override
     public int getCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(),
                                         R.layout.recipe_app_widget_list_item);
+
         boolean hasFavorite = true;
-        BakingRecipe bakingRecipe;
+        BakingRecipe bakingRecipe = null;
 
         //check if there is a Favorite one
         for (int i = 0; i < mBakingRecipeData.size(); i++) {
             if (sharedPreferenceUtil.getRecipeIsFavorite(i + 1)) {
                 bakingRecipe = mBakingRecipeData.get(i);
-
-                // use default pic
-                remoteViews.setImageViewResource(R.id.img_recipe,
-                        Constants.recipeImages[i]);
-
-                remoteViews.setTextViewText(R.id.recipe_title,
-                        bakingRecipe.getmName());
-
-                remoteViews.setTextViewText(R.id.recipe_serving,
-                        String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
-
-                remoteViews.setImageViewResource(R.id.img_favorite, R.mipmap.ic_star);
+                Log.i(TAG, "getViewAt: favorite recipe - " + bakingRecipe.toString());
                 break;
             }
             hasFavorite = false;
-        }
 
+        }
+        Log.i(TAG, "getViewAt: has favorite? " + hasFavorite);
         // no Favorite, use first recipe
         if (!hasFavorite) {
+            Log.i(TAG, "getViewAt: no Favorite");
             bakingRecipe = mBakingRecipeData.get(0);
-
-            // use default pic
-            remoteViews.setImageViewResource(R.id.img_recipe,
-                    Constants.recipeImages[0]);
-
-            remoteViews.setTextViewText(R.id.recipe_title,
-                    bakingRecipe.getmName());
-
-            remoteViews.setTextViewText(R.id.recipe_serving,
-                    String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
-
-            remoteViews.setImageViewResource(R.id.img_favorite, R.mipmap.ic_unstar);
         }
+
+        // use default pic
+        remoteViews.setImageViewResource(R.id.img_recipe,
+                Constants.recipeImages[bakingRecipe.getmId()]);
+
+        remoteViews.setTextViewText(R.id.recipe_title,
+                bakingRecipe.getmName());
+
+        remoteViews.setTextViewText(R.id.recipe_serving,
+                String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
+
         return remoteViews;
     }
 
@@ -114,10 +105,9 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
         return null;
     }
 
-    // only show the first favorite one or first recipe if there is no favorite
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -127,7 +117,7 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     public class RecipeQueryTask extends AsyncTask<Void, Void, ArrayList<BakingRecipe>> {
@@ -137,7 +127,7 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
                 String jsonRecipeResponse = NetworkUtils
                         .getResponseFromHttpUrl(OpenRecipeJsonUtils.RECIPE_URL);
                 OpenRecipeJsonUtils.getRecipesFromJson(jsonRecipeResponse, mBakingRecipeData);
-                Log.i(TAG, "doInBackground: updated Baking Recipe data size - " + mBakingRecipeData.size());
+                //Log.i(TAG, "doInBackground: updated Baking Recipe data size - " + mBakingRecipeData.size());
                 return mBakingRecipeData;
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
