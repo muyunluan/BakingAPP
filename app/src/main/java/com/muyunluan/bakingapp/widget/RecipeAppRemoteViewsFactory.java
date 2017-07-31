@@ -97,6 +97,19 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
         remoteViews.setTextViewText(R.id.recipe_serving,
                 String.format(Locale.US, " Servings: %s", bakingRecipe.getmServings()));
 
+        int size = bakingRecipe.getmIngredients().size();
+        String ingredientStr = null;
+        if (size > 0) {
+            StringBuilder ingredientsDetail = new StringBuilder("Ingredients: \n");
+            for (int i = 0; i < size; i++) {
+                ingredientsDetail.append(bakingRecipe.getmIngredients().get(i).toString() + "\n");
+            }
+            ingredientStr = ingredientsDetail.toString();
+        } else {
+            Log.e(TAG, "getViewAt: no ingredients");
+            ingredientStr = mContext.getString(R.string.empty_ingredient);
+        }
+        remoteViews.setTextViewText(R.id.tv_ingredients, ingredientStr);
         return remoteViews;
     }
 
