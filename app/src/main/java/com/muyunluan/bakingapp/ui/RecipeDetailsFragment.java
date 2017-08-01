@@ -45,7 +45,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         if (getArguments() != null) {
 
-            mIngredients = getArguments().getParcelableArrayList(Constants.KEY_INDREDIENT);
+            mIngredients = getArguments().getParcelableArrayList(Constants.KEY_INGREDIENT);
             if (null != mIngredients && mIngredients.size() > 0) {
                 hasIngredients = true;
                 //Log.i(TAG, "onCreate: get Ingredients size - " + mIngredients.size());

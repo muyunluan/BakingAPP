@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
-                intent.putExtra(Constants.KEY_INDREDIENT, mBakingRecipe.get(position).getmIngredients());
+                intent.putExtra(Constants.KEY_INGREDIENT, mBakingRecipe.get(position).getmIngredients());
                 intent.putExtra(Constants.KEY_STEP, mBakingRecipe.get(position).getmSteps());
                 mContext.startActivity(intent);
             }

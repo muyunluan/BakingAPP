@@ -39,10 +39,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
             if (null != getIntent()) {
                 Bundle args = new Bundle();
 
-                if (getIntent().hasExtra(Constants.KEY_INDREDIENT)) {
+                if (getIntent().hasExtra(Constants.KEY_INGREDIENT)) {
                     args.putParcelableArrayList(
-                            Constants.KEY_INDREDIENT,
-                            getIntent().getParcelableArrayListExtra(Constants.KEY_INDREDIENT));
+                            Constants.KEY_INGREDIENT,
+                            getIntent().getParcelableArrayListExtra(Constants.KEY_INGREDIENT));
                 } else {
                     Log.e(TAG, "onCreate: No required Ingredients info being sent");
                 }
