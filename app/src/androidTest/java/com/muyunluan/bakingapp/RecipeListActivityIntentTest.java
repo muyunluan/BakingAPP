@@ -32,9 +32,11 @@ public class RecipeListActivityIntentTest {
 
     private static final String EXTRA_RECIPE_ID_KEY = "ingredient";
     private static final int EXTRA_RECIPE_ID_VALUE = 1;
+
     @Rule
     public IntentsTestRule<MainActivity> intentsTestRule
             = new IntentsTestRule<>(MainActivity.class);
+
 
     @Before
     public void stubAllExternalIntents() {
@@ -51,6 +53,5 @@ public class RecipeListActivityIntentTest {
 //                hasExtra(EXTRA_RECIPE_ID_KEY, EXTRA_RECIPE_ID_VALUE)
 //        ));
     }
-
 
 }

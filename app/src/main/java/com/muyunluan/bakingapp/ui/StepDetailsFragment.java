@@ -93,6 +93,12 @@ public class StepDetailsFragment extends Fragment implements
         } else {
             Log.e(TAG, "onCreate: empty Bundle for Step object");
         }
+
+
+        if (null != savedInstanceState && savedInstanceState.containsKey("saved_step")) {
+            mStep = savedInstanceState.getParcelable("saved_step");
+            Log.i(TAG, "onCreate: fetch saved Step - " + mStep.toString());
+        }
     }
 
     @Override
@@ -176,6 +182,13 @@ public class StepDetailsFragment extends Fragment implements
         super.onDestroy();
         releasePlayer();
         mMediaSession.setActive(false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("saved_step", mStep);
+        Log.i(TAG, "onSaveInstanceState: save current Step - " + mStep.toString());
     }
 
     private void hideSystemUi() {
