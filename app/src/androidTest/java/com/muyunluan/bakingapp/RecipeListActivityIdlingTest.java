@@ -1,6 +1,7 @@
 package com.muyunluan.bakingapp;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentTransaction;
@@ -14,13 +15,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.core.IsAnything.anything;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.containsString;
 
 /**
  * Created by Fei Deng on 8/2/17.
@@ -46,21 +47,23 @@ public class RecipeListActivityIdlingTest {
 
     @Before
     public void registerIdlingResource() {
-        simpleIdlingResource = activityTestRule.getActivity().getSimpleIdlingResource();
+        simpleIdlingResource = startListFragment().getSimpleIdlingResource();
         Espresso.registerIdlingResources(simpleIdlingResource);
     }
 
     @Test
     public void clickOnRecyclerViewItem_idlingResourceTest() {
-        activityTestRule.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                RecipeListFragment recipeListFragment = startListFragment();
-            }
-        });
-        onView(withId(R.id.rv_recipes)).check(matches(isDisplayed()));
-        onData(anything()).inAdapterView(withId(R.id.rv_recipes)).atPosition(0).perform(click());
 
+        // test if RecyclerView displays
+        onView(withId(R.id.rv_recipes)).check(matches(isDisplayed()));
+        // click item 1 --- Brownies
+        onView(
+                withId(R.id.rv_recipes))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        // test if tv_ingredients displays
+        onView(withId(R.id.tv_ingredients)).check(matches(isDisplayed()));
+        // test if tv_ingredients contains the info for Brownies ingredient
+        onView(withId(R.id.tv_ingredients)).check(matches(withText(containsString(("Bittersweet chocolate")))));
     }
 
     @After

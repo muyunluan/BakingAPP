@@ -1,13 +1,9 @@
 package com.muyunluan.bakingapp;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.muyunluan.bakingapp.data.idling.SimpleIdlingResource;
 import com.muyunluan.bakingapp.ui.RecipeListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,18 +12,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static boolean isTablet = false;
 
-    @Nullable private SimpleIdlingResource simpleIdlingResource;
-
-    @VisibleForTesting
-    @NonNull
-    public SimpleIdlingResource getSimpleIdlingResource() {
-        if (null == simpleIdlingResource) {
-            simpleIdlingResource = new SimpleIdlingResource();
-        }
-        return simpleIdlingResource;
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         if (null == savedInstanceState) {
             navigateHome();
         }
-        getSimpleIdlingResource();
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.muyunluan.bakingapp.ui;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +19,8 @@ import android.widget.Toast;
 import com.muyunluan.bakingapp.R;
 import com.muyunluan.bakingapp.data.BakingRecipe;
 import com.muyunluan.bakingapp.data.Constants;
+import com.muyunluan.bakingapp.data.idling.RecipeFetcher;
+import com.muyunluan.bakingapp.data.idling.SimpleIdlingResource;
 import com.muyunluan.bakingapp.utils.NetworkUtils;
 import com.muyunluan.bakingapp.utils.OpenRecipeJsonUtils;
 
@@ -31,13 +36,25 @@ import static com.muyunluan.bakingapp.MainActivity.isTablet;
  * Copyright (c) 2017 Muyunluan. All rights reserved.
  */
 
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeFetcher.DelayerCallback {
 
     private static final String TAG = RecipeListFragment.class.getSimpleName();
 
     private ArrayList<BakingRecipe> mBakingRecipeData = new ArrayList<>();
     private RecipeListAdapter mRecipesAdapter;
     private RecyclerView mRecipeListView;
+
+    @Nullable
+    private SimpleIdlingResource simpleIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public SimpleIdlingResource getSimpleIdlingResource() {
+        if (null == simpleIdlingResource) {
+            simpleIdlingResource = new SimpleIdlingResource();
+        }
+        return simpleIdlingResource;
+    }
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -58,6 +75,7 @@ public class RecipeListFragment extends Fragment {
         } else {
             Log.d(TAG, "onCreate: no savedInstanceState");
         }
+        getSimpleIdlingResource();
     }
 
     @Override
@@ -86,7 +104,13 @@ public class RecipeListFragment extends Fragment {
         super.onStart();
         if (0 == mBakingRecipeData.size()) {
             //no saved data, fetch from API
-            new RecipeQueryTask().execute();
+            RecipeFetcher.fetchRecipes(
+                    getContext(),
+                    mBakingRecipeData,
+                    mRecipesAdapter,
+                    mRecipeListView,
+                    this,
+                    getSimpleIdlingResource());
         } else {
             //update with saved data
             mRecipesAdapter.clear();
@@ -110,6 +134,21 @@ public class RecipeListFragment extends Fragment {
         outState.putParcelableArrayList(Constants.KEY_SAVED_RECIPES, mBakingRecipeData);
     }
 
+    @Override
+    public void onDone(ArrayList<BakingRecipe> bakingRecipes) {
+        if (null != bakingRecipes && 0 < bakingRecipes.size()) {
+            mRecipesAdapter = new RecipeListAdapter(new ArrayList<BakingRecipe>());
+            mRecipeListView.setAdapter(mRecipesAdapter);
+            //Log.i(TAG, "onPostExecute: post Recipes len - " + bakingRecipes.size());
+            mRecipesAdapter.addAll(bakingRecipes);
+            mRecipesAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getContext(), "Empty Recipe data", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "onPostExecute: empty Recipe data");
+        }
+    }
+
+    @Deprecated
     public class RecipeQueryTask extends AsyncTask<Void, Void, ArrayList<BakingRecipe>> {
 
         @Override
