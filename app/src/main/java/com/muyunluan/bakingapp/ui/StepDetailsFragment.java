@@ -85,11 +85,15 @@ public class StepDetailsFragment extends Fragment implements
         if (null != getArguments()) {
             mSteps = getArguments().getParcelableArrayList("steps");
             mIndex = getArguments().getInt("position");
-            mStep = mSteps.get(mIndex);
-            mThumbnailUrlStr = mStep.getmThumbnailUrl();
-            mVideoUrlStr = mStep.getmVideoUrl();
-            mDescriptionStr = mStep.getmDescription();
-            mStepSize = mSteps.size();
+            if (0 == mSteps.size() || null == mSteps) {
+                Log.e(TAG, "onCreate: error happens when saving Steps parcelable list");
+            } else {
+                mStep = mSteps.get(mIndex);
+                mThumbnailUrlStr = mStep.getmThumbnailUrl();
+                mVideoUrlStr = mStep.getmVideoUrl();
+                mDescriptionStr = mStep.getmDescription();
+                mStepSize = mSteps.size();
+            }
         } else {
             Log.e(TAG, "onCreate: empty Bundle for Step object");
         }
@@ -165,6 +169,7 @@ public class StepDetailsFragment extends Fragment implements
     public void onResume() {
         super.onResume();
         mMediaSession.setActive(true);
+        initializePlayer(Uri.parse(mStep.getmVideoUrl()));
     }
 
     @Override

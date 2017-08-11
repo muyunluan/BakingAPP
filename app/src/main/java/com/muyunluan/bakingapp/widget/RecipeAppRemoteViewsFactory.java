@@ -67,18 +67,16 @@ public class RecipeAppRemoteViewsFactory implements RemoteViewsService.RemoteVie
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(),
                                         R.layout.recipe_app_widget_list_item);
 
-        boolean hasFavorite = true;
+        boolean hasFavorite = false;
         BakingRecipe bakingRecipe = null;
 
         //check if there is a Favorite one
         for (int i = 0; i < mBakingRecipeData.size(); i++) {
-            if (sharedPreferenceUtil.getRecipeIsFavorite(i + 1)) {
+            if (sharedPreferenceUtil.getRecipeIsFavorite(i + 1) && !hasFavorite) {
                 bakingRecipe = mBakingRecipeData.get(i);
                 Log.i(TAG, "getViewAt: favorite recipe - " + bakingRecipe.toString());
-                break;
+                hasFavorite = true;
             }
-            hasFavorite = false;
-
         }
         Log.i(TAG, "getViewAt: has favorite? " + hasFavorite);
         // no Favorite, use first recipe
