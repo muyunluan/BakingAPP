@@ -30,6 +30,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
+
+        if (getIntent().hasExtra(Constants.KEY_STEP)) {
+            mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
+
+        } else {
+            Log.e(TAG, "onCreate: No required Steps info being sent");
+        }
+
         if (null == savedInstanceState) {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -47,13 +55,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
                     Log.e(TAG, "onCreate: No required Ingredients info being sent");
                 }
 
-                if (getIntent().hasExtra(Constants.KEY_STEP)) {
-                    mSteps = getIntent().getParcelableArrayListExtra(Constants.KEY_STEP);
-                    args.putParcelableArrayList(Constants.KEY_STEP, mSteps);
-                } else {
-                    Log.e(TAG, "onCreate: No required Steps info being sent");
-                }
 
+                args.putParcelableArrayList(Constants.KEY_STEP, mSteps);
                 recipeDetailsFragment.setArguments(args);
             }
 
